@@ -9,7 +9,6 @@ Repositório para o Desenvolvimento do Projeto Final da Disciplina de **Programa
 
 ### Versão da Engine do Unity: **2022.3.18f1**
 
-```plaintext
 /PONG
 ├── /Assets                    # Arquivos relacionados ao jogo
 │   ├── /Animations             # Animações (bola, efeitos, etc.)
@@ -27,7 +26,6 @@ Repositório para o Desenvolvimento do Projeto Final da Disciplina de **Programa
 │   └── /Videos                 # Vídeos (introdução, animações, etc.)
 ├── /ProjectSettings            # Configurações do projeto (não precisa alterar)
 └── README.md                   # Documento com informações sobre o projeto
-```
 
 ---
 
