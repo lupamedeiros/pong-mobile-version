@@ -1,21 +1,28 @@
-# pong-mobile-version
-Repositório para Desenvolvimento do Projeto Final da Disciplina de Programação de Jogos em Rede, PJD4M-2024
-# Estrutura de Diretórios para o Projeto PONG
-Versão da Engine do Unity: 2022.3.18f1
+# Pong Mobile Version
+
+Repositório para o Desenvolvimento do Projeto Final da Disciplina de **Programação de Jogos em Rede**, PJD4M-2024.
+
+---
+
+## 🚀 Estrutura de Diretórios
+
+### Versão da Engine do Unity: **2022.3.18f1**
+
+```plaintext
 /PONG
-├── /Assets
-│   ├── /Animations           # Animações para o jogo (ex: animação da bola, efeitos, etc.)
-│   ├── /Audio                # Sons e músicas (ex: sons de batida, música de fundo)
-│   ├── /Fonts                # Fontes para o jogo (ex: fontes para pontuação, título, etc.)
-│   ├── /Materials            # Materiais (ex: texturas, shaders, etc.)
-│   ├── /Prefabs              # Prefabs para os objetos do jogo (paddle, bola, etc.)
-│   ├── /Scenes               # Cenas do jogo (ex: Menu, Jogo, Game Over, etc.)
-│   ├── /Scripts              # Scripts para lógica do jogo
-│   │   ├── /Controllers      # Scripts de controle do jogo (ex: controlador de pontuação, paddle)
-│   │   ├── /UI               # Scripts de interface de usuário (ex: controle de menu, HUD)
-│   │   └── /Utils            # Scripts utilitários (ex: gerenciamento de tempo, gerenciador de áudio)
-│   ├── /Sprites              # Imagens e sprites (ex: textura de fundo, paddles, bola)
-│   ├── /UI                   # Imagens e elementos UI (ex: botões, painéis)
-│   └── /Videos               # Vídeos (ex: introdução ou animações)
-├── /ProjectSettings          # Configurações do projeto (não precisa mexer a menos que necessário)
-└── README.md                 # Documento com informações sobre o projeto
+├── /Assets                    # Arquivos relacionados ao jogo
+│   ├── /Animations             # Animações (bola, efeitos, etc.)
+│   ├── /Audio                  # Sons e músicas (efeitos, fundo)
+│   ├── /Fonts                  # Fontes para pontuação, títulos, etc.
+│   ├── /Materials              # Materiais (texturas, shaders, etc.)
+│   ├── /Prefabs                # Prefabs de objetos (paddle, bola, etc.)
+│   ├── /Scenes                 # Cenas do jogo (Menu, Jogo, Game Over, etc.)
+│   ├── /Scripts                # Scripts do jogo
+│   │   ├── /Controllers        # Controle da lógica (pontuação, paddle)
+│   │   ├── /UI                 # Interface de usuário (menus, HUD)
+│   │   └── /Utils              # Scripts utilitários (gerenciamento de tempo, áudio)
+│   ├── /Sprites                # Imagens e sprites (background, paddles, bola)
+│   ├── /UI                     # Elementos de UI (botões, painéis)
+│   └── /Videos                 # Vídeos (introdução, animações, etc.)
+├── /ProjectSettings            # Configurações do projeto (não precisa alterar)
+└── README.md                   # Documento com informações sobre o projeto
