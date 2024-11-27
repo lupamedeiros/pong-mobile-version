@@ -40,10 +40,10 @@ Este repositório contém o desenvolvimento do **Pong Mobile Version**, um jogo 
 O **Pong** é um jogo clássico de tênis de mesa, onde o objetivo principal é controlar uma raquete (paddle) para rebater uma bola e marcar pontos contra o oponente. Nesta versão, adaptada para dispositivos móveis, a jogabilidade foi otimizada para toques e gestos, proporcionando uma experiência divertida e interativa.
 
 #### Funcionalidades:
-- **Modos de Jogo**: Inclui diferentes modos, como jogo solo contra a IA e multiplayer local.
+- **Modos de Jogo**: Inclui diferentes modos, como jogo solo contra a IA e multiplayer com sistema de ranking.
 - **Controles Tácteis**: Suporte para toques e gestos, ideais para dispositivos móveis.
 - **Interface de Usuário (UI)**: Menu inicial, HUD de jogo, tela de game over com pontuação.
-- **Pontuação e Desafios**: O jogo registra pontos e desafios, com animações e efeitos sonoros.
+- **Pontuação**: O jogo registra pontos com animações e efeitos sonoros.
 
 ---
 
