@@ -1,7 +1,3 @@
-Para colocar o conteúdo diretamente no **Notepad++**, você pode simplesmente copiar o código em Markdown abaixo e colá-lo no seu arquivo `README.md` no Notepad++. Não há necessidade de conversões adicionais, já que o **Notepad++** suporta a edição de arquivos em texto simples, e o Markdown é um formato de texto puro.
-
-Aqui está o conteúdo em Markdown pronto para ser copiado:
-
 ```markdown
 # Pong Mobile Version
 
