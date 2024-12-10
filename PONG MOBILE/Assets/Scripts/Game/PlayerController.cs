@@ -1,11 +1,12 @@
 using UnityEngine;
+using UnityEngine.EventSystems; // Necessário para usar OnPointerDown e OnPointerUp
 
 public class PlayerController : MonoBehaviour
 {
     public float speed = 10f; // Velocidade do jogador
-    public string inputAxis = "Vertical"; // Define o eixo de entrada
-
     private Rigidbody2D rb;
+
+    private float moveDirection = 0f; // Direção do movimento (-1, 0, 1)
 
     void Start()
     {
@@ -14,7 +15,23 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        float move = Input.GetAxis(inputAxis);
-        rb.velocity = new Vector2(0, move * speed);
+        // Define a velocidade com base na direção do movimento
+        rb.velocity = new Vector2(0, moveDirection * speed);
+    }
+
+    // Funções para os botões
+    public void MoveUp()
+    {
+        moveDirection = 1f; // Move para cima
+    }
+
+    public void MoveDown()
+    {
+        moveDirection = -1f; // Move para baixo
+    }
+
+    public void StopMoving()
+    {
+        moveDirection = 0f; // Para o movimento
     }
 }

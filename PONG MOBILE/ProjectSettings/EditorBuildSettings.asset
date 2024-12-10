@@ -6,8 +6,26 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/SampleScene.unity
-    guid: 2cda990e2423bbf4892e6590ba056729
+    path: Assets/Scenes/LogarNaConta.unity
+    guid: 57d74bc403ae3c94a8226a3389bd6084
+  - enabled: 1
+    path: Assets/Scenes/MainMenu.unity
+    guid: 3fc8acdd13e6c734bafef6554d6fdbcd
+  - enabled: 1
+    path: Assets/Scenes/BotScene.unity
+    guid: 742de4b8dacc84d40bccd77ca9db3922
+  - enabled: 1
+    path: Assets/Scenes/CasualScene.unity
+    guid: fb7bf57bfd1191348a2c1be2c327d4df
+  - enabled: 1
+    path: Assets/Scenes/CompetitiveScene.unity
+    guid: 51db959120c350c42848086555cbe861
+  - enabled: 1
+    path: Assets/Scenes/LocalScene.unity
+    guid: e38a9fe956178d24eb2b3ed3a29152a7
+  - enabled: 1
+    path: Assets/Scenes/LocalScene 2.unity
+    guid: 94464d56f8f669b43be9092de7d3c2be
   m_configObjects:
     com.unity.adaptiveperformance.loader_settings: {fileID: 11400000, guid: f6358020068a51b4cbeb6600d222951d, type: 2}
     com.unity.adaptiveperformance.simulator.provider_settings: {fileID: 11400000, guid: efd190e1628d9a948944953234918d3f, type: 2}

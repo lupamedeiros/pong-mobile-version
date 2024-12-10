@@ -5,7 +5,7 @@ public class PongBotController : MonoBehaviour
     public bool isFacil = false;  // Ativa o bot fácil
     public bool isMedio = false;  // Ativa o bot médio
     public bool isDificil = false; // Ativa o bot difícil
-
+    public GameObject PainelBot;
     public float speed = 5f; // Velocidade do bot (fixa)
     public float delayFacil = 0.5f; // Delay para o bot fácil
     public float delayMedio = 0.3f; // Delay para o bot médio
@@ -18,6 +18,8 @@ public class PongBotController : MonoBehaviour
 
     void Start()
     {
+        PainelBot.SetActive(true);
+        Time.timeScale = 0f;
         rb = GetComponent<Rigidbody2D>();
         ball = GameObject.FindGameObjectWithTag("Ball").transform; // Encontra a bola pela tag "Ball"
         timeSinceLastMove = 0f;
@@ -30,20 +32,19 @@ public class PongBotController : MonoBehaviour
         if (isFacil)
         {
             delayTime = delayFacil;
+            speed = 6;
         }
         else if (isMedio)
         {
             delayTime = delayMedio;
+            speed = 8;
         }
         else if (isDificil)
         {
             delayTime = delayDificil;
+            speed = 10;
         }
-
-        // Conta o tempo desde o último movimento
         timeSinceLastMove += Time.fixedDeltaTime;
-
-        // Só começa a mover o bot depois do delay
         if (timeSinceLastMove >= delayTime)
         {
             MoveBot();
@@ -52,7 +53,6 @@ public class PongBotController : MonoBehaviour
 
     void MoveBot()
     {
-        // Verifica a direção horizontal da bola
         Vector2 ballVelocity = ball.GetComponent<Rigidbody2D>().velocity;
 
         // Se a velocidade horizontal da bola for negativa (bola indo para o lado do bot)
@@ -77,5 +77,31 @@ public class PongBotController : MonoBehaviour
                 transform.position = Vector2.MoveTowards(transform.position, targetPosition, speed * Time.fixedDeltaTime);
             }
         }
+    }
+
+    public void Botfacil()
+    {
+        isFacil = true;
+        isMedio = false;
+        isDificil = false;
+        PainelBot.SetActive(false);
+        Time.timeScale = 1f;
+    }
+    public void BotMedio()
+    {
+        isMedio = true;
+        isFacil = false;
+        isDificil = false;
+        PainelBot.SetActive(false);
+        Time.timeScale = 1f;
+        
+    }
+    public void BotDificil()
+    {
+        isDificil = true;
+        isFacil = false;
+        isMedio = false;
+        PainelBot.SetActive(false);
+        Time.timeScale = 1f;
     }
 }

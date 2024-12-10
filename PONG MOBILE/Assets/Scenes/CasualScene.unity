@@ -552,7 +552,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 5
-  inputAxis: Vertical
 --- !u!50 &523512007
 Rigidbody2D:
   serializedVersion: 4
@@ -1621,6 +1620,7 @@ MonoBehaviour:
   isFacil: 0
   isMedio: 0
   isDificil: 1
+  PainelBot: {fileID: 0}
   speed: 5
   delayFacil: 0.5
   delayMedio: 0.3
