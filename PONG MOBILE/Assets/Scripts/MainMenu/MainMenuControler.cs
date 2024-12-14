@@ -1,30 +1,34 @@
 using UnityEngine;
-using UnityEngine.SceneManagement;
+using UnityEngine.UI;
+using Photon.Pun;
 
-public class MainMenuController : MonoBehaviour
+public class MenuManager : MonoBehaviour
 {
-    public void PlayCompetitive()
+    public Text playerNameText; // Texto para mostrar o nome do jogador
+    public GameObject waitingPanel; // Painel que exibe "Aguardando Oponentes"
+    public GameObject menuPanel; // Painel do menu principal
+    private MatchmakingManager matchmakingManager;
+
+    void Start()
     {
-        SceneManager.LoadScene("CompetitiveScene");
+        // Exibe o nome do jogador que foi definido no LoginManager
+        playerNameText.text = PhotonNetwork.NickName;
+
+        // Inicializa o MatchmakingManager
+        matchmakingManager = FindObjectOfType<MatchmakingManager>();
+
+        // Inicialmente, esconde o painel de espera e mostra o menu
+        menuPanel.SetActive(true);
+        waitingPanel.SetActive(false);
     }
 
-    public void PlayCasual()
+    // Método chamado quando o jogador clica em "Jogar"
+    public void OnPlayButtonClicked()
     {
-        SceneManager.LoadScene("CasualScene");
-    }
+        menuPanel.SetActive(false); // Esconde o painel do menu
+        waitingPanel.SetActive(true); // Exibe o painel de espera
 
-    public void PlayWithBot()
-    {
-        SceneManager.LoadScene("BotScene");
-    }
-
-    public void PlayLocal()
-    {
-        SceneManager.LoadScene("LocalScene");
-    }
-
-    public void QuitGame()
-    {
-        Application.Quit();
+        // Inicia o matchmaking
+        matchmakingManager.StartMatchmaking();
     }
 }

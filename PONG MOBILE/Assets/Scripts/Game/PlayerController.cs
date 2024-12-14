@@ -1,37 +1,62 @@
 using UnityEngine;
-using UnityEngine.EventSystems; // Necessário para usar OnPointerDown e OnPointerUp
+using Photon.Pun;
 
-public class PlayerController : MonoBehaviour
+public class PlayerController : MonoBehaviourPun
 {
-    public float speed = 10f; // Velocidade do jogador
+    public float speed = 10f;
     private Rigidbody2D rb;
 
-    private float moveDirection = 0f; // Direção do movimento (-1, 0, 1)
+    public bool isControlledLocally = false; // Este jogador é controlado localmente?
+    private bool isPlayerLeft = false; // Determina se é o jogador da esquerda
 
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
     }
 
-    void Update()
+    // Configura o lado do jogador
+    public void AssignSide(bool isLeft)
     {
-        // Define a velocidade com base na direção do movimento
-        rb.velocity = new Vector2(0, moveDirection * speed);
+        isPlayerLeft = isLeft;
     }
 
-    // Funções para os botões
+    // Método chamado para mover para cima
     public void MoveUp()
     {
-        moveDirection = 1f; // Move para cima
+        if (isControlledLocally)
+        {
+            rb.velocity = new Vector2(0, speed);
+            photonView.RPC("SyncPlayerPosition", RpcTarget.Others, rb.position); // Sincroniza a posição
+        }
     }
 
+    // Método chamado para mover para baixo
     public void MoveDown()
     {
-        moveDirection = -1f; // Move para baixo
+        if (isControlledLocally)
+        {
+            rb.velocity = new Vector2(0, -speed);
+            photonView.RPC("SyncPlayerPosition", RpcTarget.Others, rb.position); // Sincroniza a posição
+        }
     }
 
+    // Método chamado para parar o movimento
     public void StopMoving()
     {
-        moveDirection = 0f; // Para o movimento
+        if (isControlledLocally)
+        {
+            rb.velocity = Vector2.zero;
+            photonView.RPC("SyncPlayerPosition", RpcTarget.Others, rb.position); // Sincroniza a posição
+        }
+    }
+
+    // RPC para sincronizar a posição do jogador
+    [PunRPC]
+    public void SyncPlayerPosition(Vector2 position)
+    {
+        if (!isControlledLocally)
+        {
+            rb.position = position;
+        }
     }
 }
