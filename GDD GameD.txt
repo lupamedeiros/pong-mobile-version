@@ -1,0 +1,7 @@
+Pedro Renatos dos Anjos Silva: Organizou o documento, pensou nas mecânicas do jogo, modo de jogo, layouts das telas e dimensões, 
+está ajudando o pessoal da arte, e está auxiliando os outros grupos responsáveis por outras demandas, como ajudando com a paleta de cores, com os áudios,
+opinando sobre on tons e ajudando a montar o jogo dentro da unity com o grupo da programação.
+
+Italo Lima: Pensou no layout das telas, está ajudando o grupo da arte, definindo o conceito e paleta de cores entre outras coisas.
+
+Luiz Adriano: Pensou nos Layouts das telas, e ajudando o grupo da programação com as mecânicas e funcionalidades do jogo.
