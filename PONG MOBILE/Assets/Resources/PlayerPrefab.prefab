@@ -168,7 +168,7 @@ GameObject:
   - component: {fileID: 5358403958093686140}
   - component: {fileID: 856574518519150043}
   m_Layer: 0
-  m_Name: Player 1
+  m_Name: PlayerPrefab
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -299,8 +299,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 57caa64434a79254481cd439777467ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 10
-  isControlledLocally: 0
+  moveSpeed: 5
 --- !u!50 &6722437159486318402
 Rigidbody2D:
   serializedVersion: 4

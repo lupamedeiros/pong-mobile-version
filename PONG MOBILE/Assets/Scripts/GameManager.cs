@@ -1,54 +1,126 @@
-using UnityEngine;
 using Photon.Pun;
+using UnityEngine;
+using UnityEngine.UI;
+using System.Collections;
 
-public class GameManager : MonoBehaviourPunCallbacks
+public class GameManager : MonoBehaviour
 {
-    public GameObject playerLeft;
-    public GameObject playerRight;
+    public GameObject playerPrefab; // Prefab do jogador a ser instanciado
+    public GameObject waitingPanel; // Painel de espera
+    public Text countdownText;      // Texto da contagem regressiva
+    public GameObject ballPrefab;   // Prefab da bola
+    public int countdownTime = 3;   // Tempo da contagem regressiva
 
-    private int scoreLeft = 0;
-    private int scoreRight = 0;
+    private bool gameStarted = false;
+    private GameObject ball;        // Referência para a bola instanciada
 
     void Start()
     {
-        // Determina os papéis dos jogadores (quem é esquerda e quem é direita)
-        if (PhotonNetwork.IsMasterClient)
+        // Exibe o painel de espera até que dois jogadores entrem
+        waitingPanel.SetActive(true);
+        StartCoroutine(CheckPlayersReady());
+    }
+
+    // Método para instanciar o jogador
+    public void InstantiatePlayer()
+    {
+        if (playerPrefab != null)
         {
-            playerRight.GetComponent<PlayerController>().isControlledLocally = true;
-            playerRight.GetComponent<PlayerController>().AssignSide(false); // Player da direita
+            Debug.Log("Instanciando jogador...");
+
+            // Define a posição e rotação do jogador com base no número de jogadores
+            float spawnPosition = PhotonNetwork.PlayerList.Length == 1 ? 8f : -8f;
+            Quaternion spawnRotation = PhotonNetwork.PlayerList.Length == 1
+                ? Quaternion.Euler(0, 0, 90) // Primeiro jogador: Rotação -90°
+                : Quaternion.Euler(0, 0, -90); // Segundo jogador: Rotação 90°
+
+            // Instancia o jogador na posição e rotação corretas
+            try
+            {
+                PhotonNetwork.Instantiate(playerPrefab.name, new Vector3(spawnPosition, 0, 0), spawnRotation);
+                Debug.Log("Jogador instanciado com sucesso!");
+            }
+            catch (System.Exception e)
+            {
+                Debug.LogError($"Erro ao instanciar o jogador: {e.Message}");
+            }
         }
         else
         {
-            playerLeft.GetComponent<PlayerController>().isControlledLocally = true;
-            playerLeft.GetComponent<PlayerController>().AssignSide(true); // Player da esquerda
+            Debug.LogError("Prefab do jogador não foi atribuído no GameManager!");
         }
     }
 
-    [PunRPC]
-    public void ScorePoint(string side)
+    // Corrotina para verificar se os jogadores entraram na sala
+    IEnumerator CheckPlayersReady()
     {
-        if (!PhotonNetwork.IsMasterClient) return; // Apenas o Master Client controla a pontuação
-
-        if (side == "Left")
+        // Aguarda até que dois jogadores entrem na sala
+        while (PhotonNetwork.PlayerList.Length < 2)
         {
-            scoreLeft++;
-        }
-        else if (side == "Right")
-        {
-            scoreRight++;
+            yield return null; // Aguarda o próximo frame
         }
 
-        // Sincronizar os pontos com todos os jogadores
-        photonView.RPC("SyncScore", RpcTarget.All, scoreLeft, scoreRight);
+        // Quando ambos os jogadores entrarem, começa a contagem regressiva
+        StartCoroutine(StartCountdown());
     }
 
-    [PunRPC]
-    public void SyncScore(int left, int right)
+    // Corrotina da contagem regressiva
+    IEnumerator StartCountdown()
     {
-        scoreLeft = left;
-        scoreRight = right;
+        int count = countdownTime;
 
-        // Exibir os pontos na interface (se houver)
-        Debug.Log($"Pontuação Atual - Esquerda: {scoreLeft} | Direita: {scoreRight}");
+        // Exibe a contagem regressiva
+        while (count > 0)
+        {
+            countdownText.text = count.ToString();
+            yield return new WaitForSeconds(1);
+            count--;
+        }
+
+        // Quando a contagem terminar, exibe "GO!" e remove o painel
+        countdownText.text = "GO!";
+        yield return new WaitForSeconds(1);
+        waitingPanel.SetActive(false); // Remove o painel de espera
+        gameStarted = true;            // Permite a movimentação
+
+        // Agora instanciamos e lançamos a bola
+        if (PhotonNetwork.IsMasterClient)  // Verifica se o jogador atual é o Master Client
+        {
+            LaunchBall();
+        }
+    }
+
+    // Método para instanciar e lançar a bola
+// Método para instanciar e lançar a bola
+    void LaunchBall()
+    {
+        if (ballPrefab != null)
+        {
+            // Instancia a bola no centro da cena
+            ball = PhotonNetwork.Instantiate(ballPrefab.name, Vector3.zero, Quaternion.identity);
+            Debug.Log("Bola instanciada!");
+
+            // Adiciona um impulso à bola em uma direção aleatória
+            Rigidbody rb = ball.GetComponent<Rigidbody>();
+            if (rb != null)
+            {
+                // Direção aleatória
+                float xDirection = Random.Range(0, 2) == 0 ? -1f : 1f; // Direção aleatória no eixo X (esquerda ou direita)
+                float yDirection = Random.Range(-1f, 1f); // Direção aleatória no eixo Y (para cima ou para baixo)
+            
+                Vector3 randomDirection = new Vector3(xDirection, yDirection, 0).normalized; // Direção normalizada
+                rb.AddForce(randomDirection * 10f, ForceMode.Impulse); // Aplica um impulso na direção aleatória com força de 10
+            }
+        }
+        else
+        {
+            Debug.LogError("Prefab da bola não foi atribuído no GameManager!");
+        }
+    }
+
+
+    public bool IsGameStarted()
+    {
+        return gameStarted;
     }
 }

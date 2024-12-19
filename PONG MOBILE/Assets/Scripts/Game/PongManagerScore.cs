@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class PongManager : MonoBehaviour
 {
-    public GameObject pongBall; // Referência para a bola
+    /*public GameObject pongBall; // Referência para a bola
     private PongBallController ballController; // Controlador da bola
     private PongScoreManager scoreManager; // Gerenciador de pontuação
 
@@ -35,5 +35,5 @@ public class PongManager : MonoBehaviour
 
         // Reinicia a velocidade da bola
         ballController.ResetBall();
-    }
+    }*/
 }

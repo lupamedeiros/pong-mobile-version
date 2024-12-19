@@ -1,64 +1,46 @@
-using UnityEngine;
 using Photon.Pun;
+using UnityEngine;
 
 public class PongBallController : MonoBehaviourPun
 {
-    public float initialSpeed = 5f;
-    private Rigidbody2D rb;
+    private Rigidbody2D rb;  // Referência ao Rigidbody2D para controlar o movimento
+    public float initialSpeed = 10f; // Velocidade inicial da bola
+    private Vector2 initialDirection; // Direção inicial da bola
 
     void Start()
     {
-        rb = GetComponent<Rigidbody2D>();
+        rb = GetComponent<Rigidbody2D>(); // Obtemos o Rigidbody2D da bola
 
-        if (photonView.IsMine) // Apenas o Master Client controla a lógica inicial da bola
+        if (photonView.IsMine) // Só o jogador local (o que controla a bola) aplica a lógica de movimento
         {
-            ResetBall();
+            // Direção aleatória
+            float xDirection = Random.Range(0, 2) == 0 ? -1f : 1f; // Direção aleatória no eixo X
+            float yDirection = Random.Range(-1f, 1f); // Direção aleatória no eixo Y
+
+            initialDirection = new Vector2(xDirection, yDirection).normalized;
+
+            // Aplica o movimento inicial
+            rb.velocity = initialDirection * initialSpeed;
         }
     }
 
+    void Update()
+    {
+        // Aqui, qualquer outra lógica de movimento ou colisão pode ser tratada
+    }
+
+    // Método para resetar a bola (chamado pelo GameManager quando necessário)
     public void ResetBall()
     {
-        if (!PhotonNetwork.IsMasterClient) return;
-
+        // Reseta a posição e a velocidade da bola
+        rb.velocity = Vector2.zero;
         transform.position = Vector3.zero;
 
-        // Direção aleatória para a bola
-        float xDirection = Random.Range(0, 2) == 0 ? -1 : 1;
+        // Aplica uma nova direção aleatória após reset
+        float xDirection = Random.Range(0, 2) == 0 ? -1f : 1f;
         float yDirection = Random.Range(-1f, 1f);
-
-        Vector2 direction = new Vector2(xDirection, yDirection).normalized;
-        rb.velocity = direction * initialSpeed;
-
-        // Sincronizar a posição e a velocidade da bola com todos os jogadores
-        photonView.RPC("SyncBall", RpcTarget.All, rb.position, rb.velocity);
-    }
-
-    [PunRPC]
-    public void SyncBall(Vector2 position, Vector2 velocity)
-    {
-        rb.position = position;
-        rb.velocity = velocity;
-    }
-
-    void OnCollisionEnter2D(Collision2D collision)
-    {
-        // Atualizar a posição e a velocidade da bola em todos os jogadores ao colidir com algo
-        photonView.RPC("SyncBall", RpcTarget.All, rb.position, rb.velocity);
-    }
-
-    void OnBecameInvisible()
-    {
-        if (!PhotonNetwork.IsMasterClient) return;
-
-        if (transform.position.x < -10)
-        {
-            FindObjectOfType<GameManager>().photonView.RPC("ScorePoint", RpcTarget.All, "Right");
-            ResetBall();
-        }
-        else if (transform.position.x > 10)
-        {
-            FindObjectOfType<GameManager>().photonView.RPC("ScorePoint", RpcTarget.All, "Left");
-            ResetBall();
-        }
+        Vector2 newDirection = new Vector2(xDirection, yDirection).normalized;
+        
+        rb.velocity = newDirection * initialSpeed;
     }
 }
