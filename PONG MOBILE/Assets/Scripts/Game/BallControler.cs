@@ -3,44 +3,42 @@ using UnityEngine;
 
 public class PongBallController : MonoBehaviourPun
 {
-    private Rigidbody2D rb;  // Referência ao Rigidbody2D para controlar o movimento
-    public float initialSpeed = 10f; // Velocidade inicial da bola
-    private Vector2 initialDirection; // Direção inicial da bola
+    private Rigidbody2D rb;
+    public float initialSpeed = 10f;
 
     void Start()
     {
-        rb = GetComponent<Rigidbody2D>(); // Obtemos o Rigidbody2D da bola
+        rb = GetComponent<Rigidbody2D>();
 
-        if (photonView.IsMine) // Só o jogador local (o que controla a bola) aplica a lógica de movimento
+        if (photonView.IsMine)
         {
-            // Direção aleatória
-            float xDirection = Random.Range(0, 2) == 0 ? -1f : 1f; // Direção aleatória no eixo X
-            float yDirection = Random.Range(-1f, 1f); // Direção aleatória no eixo Y
-
-            initialDirection = new Vector2(xDirection, yDirection).normalized;
-
-            // Aplica o movimento inicial
-            rb.velocity = initialDirection * initialSpeed;
+            LaunchBall();
         }
     }
 
-    void Update()
+    public void LaunchBall()
     {
-        // Aqui, qualquer outra lógica de movimento ou colisão pode ser tratada
-    }
-
-    // Método para resetar a bola (chamado pelo GameManager quando necessário)
-    public void ResetBall()
-    {
-        // Reseta a posição e a velocidade da bola
-        rb.velocity = Vector2.zero;
-        transform.position = Vector3.zero;
-
-        // Aplica uma nova direção aleatória após reset
         float xDirection = Random.Range(0, 2) == 0 ? -1f : 1f;
         float yDirection = Random.Range(-1f, 1f);
-        Vector2 newDirection = new Vector2(xDirection, yDirection).normalized;
-        
-        rb.velocity = newDirection * initialSpeed;
+
+        Vector2 initialDirection = new Vector2(xDirection, yDirection).normalized;
+        rb.velocity = initialDirection * initialSpeed;
+    }
+
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        if (!photonView.IsMine) return;
+
+        if (other.CompareTag("Boundary"))
+        {
+            bool isLeft = transform.position.x > 0;
+            FindObjectOfType<GameManager>().AddScore(isLeft);
+        }
+    }
+
+    public void ResetBall()
+    {
+        rb.velocity = Vector2.zero;
+        transform.position = Vector3.zero;
     }
 }

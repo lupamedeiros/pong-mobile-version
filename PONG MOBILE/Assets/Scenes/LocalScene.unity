@@ -885,8 +885,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 57caa64434a79254481cd439777467ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 10
-  isControlledLocally: 0
+  moveSpeed: 5
 --- !u!50 &523512007
 Rigidbody2D:
   serializedVersion: 4
@@ -948,7 +947,8 @@ MonoBehaviour:
   Synchronization: 3
   OwnershipTransfer: 0
   observableSearch: 2
-  ObservedComponents: []
+  ObservedComponents:
+  - {fileID: 523512008}
   sceneViewId: 2
   InstantiationId: 0
   isRuntimeInstantiated: 0
@@ -1013,8 +1013,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 57caa64434a79254481cd439777467ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 10
-  isControlledLocally: 0
+  moveSpeed: 5
 --- !u!61 &793850849
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1162,7 +1161,8 @@ MonoBehaviour:
   Synchronization: 3
   OwnershipTransfer: 0
   observableSearch: 2
-  ObservedComponents: []
+  ObservedComponents:
+  - {fileID: 793850852}
   sceneViewId: 1
   InstantiationId: 0
   isRuntimeInstantiated: 0
