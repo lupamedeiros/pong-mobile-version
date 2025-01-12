@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class ClienteServer : MonoBehaviour
 {
-    public static ClienteServer Instance; // Singleton Instance
+    public static ClienteServer Instance; 
 
     public string PlayerName { get; private set; }
     public int PlayerId { get; private set; }
