@@ -1,31 +1,29 @@
 using UnityEngine;
 using UnityEngine.UI;
-using Photon.Pun;
+using UnityEngine.SceneManagement;
 
-public class LoginManager : MonoBehaviourPunCallbacks
+public class UIManager : MonoBehaviour
 {
-    public InputField playerNameInputField; // Campo para o nome do jogador
+    public InputField playerNameInput;
+    public Button playButton;
 
-    // Método para o jogador fazer login
-    public void OnLogin()
+    private void Start()
     {
-        string playerName = playerNameInputField.text;
+        playButton.onClick.AddListener(OnPlayButtonClicked);
+        ClienteServer.Instance.ConnectToServer();
+    }
+
+    private void OnPlayButtonClicked()
+    {
+        string playerName = playerNameInput.text.Trim();
         if (!string.IsNullOrEmpty(playerName))
         {
-            PhotonNetwork.NickName = playerName; // Define o nome do jogador
-            PhotonNetwork.ConnectUsingSettings(); // Conecta ao Photon
+            ClienteServer.Instance.SendPlayerName(playerName);
+            SceneManager.LoadScene(1);
         }
         else
         {
-            Debug.Log("Nome do jogador não pode estar vazio");
+            Debug.LogWarning("Nome do jogador não pode estar vazio.");
         }
-    }
-
-    // Método chamado quando a conexão ao Photon é bem-sucedida
-    public override void OnConnectedToMaster()
-    {
-        Debug.Log("Conectado ao Photon");
-        // Carrega a cena do menu após o login
-        PhotonNetwork.LoadLevel("MainMenu");
     }
 }
