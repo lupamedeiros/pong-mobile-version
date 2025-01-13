@@ -1,26 +1,28 @@
+using System.Collections;
 using Photon.Pun;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-using System.Collections;
 
 public class GameManager : MonoBehaviour
 {
-    public GameObject playerPrefab; // Prefab do jogador a ser instanciado
-    public GameObject waitingPanel; // Painel de espera
-    public Text countdownText;      // Texto da contagem regressiva
-    public GameObject ballPrefab;   // Prefab da bola
-    public Text leftScoreText;      // Texto da pontuação do jogador esquerdo
-    public Text rightScoreText;     // Texto da pontuação do jogador direito
-    public int countdownTime = 3;   // Tempo da contagem regressiva
+    public GameObject playerPrefab; 
+    public GameObject waitingPanel;
+    public Text countdownText;
+    public GameObject ballPrefab; 
+    public Text leftScoreText; 
+    public Text rightScoreText;
+    public int countdownTime = 3; 
 
     private bool gameStarted = false;
-    private GameObject ball;        // Referência para a bola instanciada
+    private GameObject ball;
     private int leftScore = 0;
     private int rightScore = 0;
 
+    public Text winnerText;  // Texto que exibirá quem ganhou
+
     void Start()
     {
-        // Exibe o painel de espera até que dois jogadores entrem
         waitingPanel.SetActive(true);
         StartCoroutine(CheckPlayersReady());
         UpdateScoreUI();
@@ -34,7 +36,20 @@ public class GameManager : MonoBehaviour
             rightScore++;
 
         UpdateScoreUI();
-        StartCoroutine(ResetBallAfterDelay());
+
+        // Verifica se alguém atingiu 10 pontos
+        if (leftScore >= 1)
+        {
+            Winner(true); // Jogador esquerdo ganha
+        }
+        else if (rightScore >= 1)
+        {
+            Winner(false); // Jogador direito ganha
+        }
+        else
+        {
+            StartCoroutine(ResetBallAfterDelay());
+        }
     }
 
     private void UpdateScoreUI()
@@ -68,6 +83,52 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    private void Winner(bool isLeft)
+    {
+        if (isLeft)
+        {
+            // Se o jogador da esquerda ganhou
+            if (PhotonNetwork.LocalPlayer.ActorNumber == 1)
+            {
+                // Se for o jogador 1 (isMine do jogador esquerdo)
+                ClienteServer.Instance.AddPoints(10);  // Jogador esquerdo ganha
+                ClienteServer.Instance.SubtractPoints(10); // Jogador direito perde
+            }
+            else
+            {
+                // Se for o jogador 2 (isMine do jogador direito)
+                ClienteServer.Instance.AddPoints(10);  // Jogador esquerdo ganha
+                ClienteServer.Instance.SubtractPoints(10); // Jogador direito perde
+            }
+            winnerText.text = "Jogador Esquerdo Venceu!";
+        }
+        else
+        {
+            // Se o jogador da direita ganhou
+            if (PhotonNetwork.LocalPlayer.ActorNumber == 2)
+            {
+                // Se for o jogador 2 (isMine do jogador direito)
+                ClienteServer.Instance.AddPoints(10);  // Jogador direito ganha
+                ClienteServer.Instance.SubtractPoints(10); // Jogador esquerdo perde
+            }
+            else
+            {
+                // Se for o jogador 1 (isMine do jogador esquerdo)
+                ClienteServer.Instance.AddPoints(10);  // Jogador direito ganha
+                ClienteServer.Instance.SubtractPoints(10); // Jogador esquerdo perde
+            }
+            winnerText.text = "Jogador Direito Venceu!";
+        }
+
+        StartCoroutine(LoadMainMenuAfterDelay());
+    }
+
+    IEnumerator LoadMainMenuAfterDelay()
+    {
+        yield return new WaitForSeconds(2f); // Espera 2 segundos antes de carregar o menu
+        SceneManager.LoadScene("MainMenu"); // Nome da cena do menu inicial
+    }
+
     public void InstantiatePlayer()
     {
         if (playerPrefab != null)
@@ -76,12 +137,12 @@ public class GameManager : MonoBehaviour
 
             float spawnPosition = PhotonNetwork.PlayerList.Length == 1 ? 8f : -8f;
             Quaternion spawnRotation = PhotonNetwork.PlayerList.Length == 1
-                ? Quaternion.Euler(0, 0, 90)
-                : Quaternion.Euler(0, 0, -90);
+                ? Quaternion.Euler(0, 180, 0)
+                : Quaternion.Euler(0, 0, 0);
 
             try
             {
-                PhotonNetwork.Instantiate(playerPrefab.name, new Vector3(spawnPosition, 0, 0), spawnRotation);
+                GameObject player = PhotonNetwork.Instantiate(playerPrefab.name, new Vector3(spawnPosition, 0, 0), spawnRotation);
                 Debug.Log("Jogador instanciado com sucesso!");
             }
             catch (System.Exception e)

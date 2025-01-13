@@ -17,8 +17,14 @@ public class PlayerMovement : MonoBehaviourPun
         // Verifica se o jogador tem a propriedade IsMine e se o jogo já começou
         if (photonView.IsMine && gameManager != null && gameManager.IsGameStarted())
         {
-            float moveInput = Input.GetAxisRaw("Horizontal");
-            transform.Translate(Vector3.right * moveInput * moveSpeed * Time.deltaTime);
+            float moveInputVertical = 0f;
+
+            // Detecta movimento vertical com as teclas W/S
+            if (Input.GetKey(KeyCode.W)) moveInputVertical = 1f; // Cima
+            if (Input.GetKey(KeyCode.S)) moveInputVertical = -1f; // Baixo
+
+            // Movimento vertical (cima/baixo)
+            transform.Translate(Vector3.up * moveInputVertical * moveSpeed * Time.deltaTime);
         }
     }
 }
